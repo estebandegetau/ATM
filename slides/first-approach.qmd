@@ -1,0 +1,37 @@
+---
+title: "Welfare banking competition"
+author:
+    - "José Ángel Alonso"
+    - "Esteban Degetau"
+format: revealjs
+toc: true
+bibliography: references.bib
+nocite: |
+    @programa2021
+---
+
+# Introduction
+
+## Motivation
+
+-   A key objective of the *Banco del Bienestar* is to provide financial services to previously unattended areas.
+
+-   Financial inclusion in Mexico is low compared with other latin american countries [@navis2020].
+
+-   The program rests on the theory that demand for financial services has gone unmet by private supply because of missing financial infraestructure, i.e. brick and mortar banks in rural areas.
+
+## Research question
+
+Can *Banco del Bienestar*
+
+# Data
+
+## Data sources
+
+## Data description
+
+## Cleaning
+
+## Maps
+
+## References
