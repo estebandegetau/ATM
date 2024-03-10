@@ -3,11 +3,15 @@ title: "Welfare banking competition"
 author:
     - "José Ángel Alonso"
     - "Esteban Degetau"
-format: revealjs
+format: 
+    revealjs:
+        theme: simple
+        fig-align: center
 toc: true
+toc-depth: 1
 bibliography: references.bib
 nocite: |
-    @programa2021
+    @programa2021; @inegi_directorio_2023
 ---
 
 # Introduction
@@ -16,22 +20,75 @@ nocite: |
 
 -   A key objective of the *Banco del Bienestar* is to provide financial services to previously unattended areas.
 
--   Financial inclusion in Mexico is low compared with other latin american countries [@navis2020].
+-   Financial inclusion in Mexico is low relative to other latin american countries [@navis2020].
 
 -   The program rests on the theory that demand for financial services has gone unmet by private supply because of missing financial infraestructure, i.e. brick and mortar banks in rural areas.
 
 ## Research question
 
-Can *Banco del Bienestar*
+On the other hand, the program may be crowding out private banks and increasing competition in areas where they already operate.
+
+> What is the net effect of *Banco del Bienestar* on private banks' geographical access to clients?
 
 # Data
 
 ## Data sources
 
-## Data description
+National Directory of Economic Units (DENUE) from the National Institute of Statistics and Geography (INEGI).
+
+-  The DENUE is a directory of all economic units in Mexico, including their location, economic activity, and size.
+- Yearly updates for big businesses and/or key economic sectors.
+- Complete updates every 5 years through the Economic Census.
+
 
 ## Cleaning
 
-## Maps
+- We filtered the data to include only banks.
+- *Banco del Bienestar* branches were easily identified by their name.
+- We use DENUE data from 2021 to 2023 to see changes in branches' locations over time, and see whether private banks are opening new branches in areas where *Banco del Bienestar* has invested.
+
+## Nation wide
+
+![](figures/MXT.png){fig-align="center"; width="100%"}
+
+## CDMX
+
+![](figures/cdmx.png){fig-align="center"}
+
+## Oaxaca
+
+![](figures/oaxaca.png){fig-align="center"}
+
+# Foreward
+
+## Next steps
+
+Take the distance between *Banco del Bienestar* and private banks:
+
+$$
+D_{ji}^1 = \text{Dist}(BdB_j^{2023}, PB_i^{2023})
+$$
+
+Then, take the distance between *Banco del Bienestar* and private banks in 2021:
+$$
+D_{ji}^0 = \text{Dist}(BdB_j^{2023}, PB_i^{2021})
+$$
+
+## Change in distance
+
+We can calculate the change in distance between *Banco del Bienestar* and private banks:
+$$
+\delta_{ij} = D_{ij}^1 - D_{ij}^0
+$$
+
+## Hypothesis test
+
+Finally, we can test whether the average change in distance is statistically different from zero:
+$$
+H_0: \mathbb E(\delta_{ij}) = 0 \quad \text{vs.} \quad H_1: \mathbb E(\delta_{ij}) \neq 0
+$$
+
+To show whether *Banco del Bienestar* is increasing geographic access to private banking.
+
 
 ## References

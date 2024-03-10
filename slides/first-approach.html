@@ -366,19 +366,9 @@ Esteban Degetau
 <nav role="doc-toc"> 
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#/introduction" id="/toc-introduction">Introduction</a>
-<ul>
-<li><a href="#/motivation" id="/toc-motivation">Motivation</a></li>
-<li><a href="#/research-question" id="/toc-research-question">Research question</a></li>
-</ul></li>
-<li><a href="#/data" id="/toc-data">Data</a>
-<ul>
-<li><a href="#/data-sources" id="/toc-data-sources">Data sources</a></li>
-<li><a href="#/data-description" id="/toc-data-description">Data description</a></li>
-<li><a href="#/cleaning" id="/toc-cleaning">Cleaning</a></li>
-<li><a href="#/maps" id="/toc-maps">Maps</a></li>
-<li><a href="#/references" id="/toc-references">References</a></li>
-</ul></li>
+<li><a href="#/introduction" id="/toc-introduction">Introduction</a></li>
+<li><a href="#/data" id="/toc-data">Data</a></li>
+<li><a href="#/foreward" id="/toc-foreward">Foreward</a></li>
 </ul>
 </nav>
 </section>
@@ -391,13 +381,16 @@ Esteban Degetau
 <h2>Motivation</h2>
 <ul>
 <li><p>A key objective of the <em>Banco del Bienestar</em> is to provide financial services to previously unattended areas.</p></li>
-<li><p>Financial inclusion in Mexico is low compared with other latin american countries <span class="citation" data-cites="navis2020">(<a href="#/references" role="doc-biblioref" onclick="">Navis et al. 2020</a>)</span>.</p></li>
+<li><p>Financial inclusion in Mexico is low relative to other latin american countries <span class="citation" data-cites="navis2020">(<a href="#/references" role="doc-biblioref" onclick="">Navis et al. 2020</a>)</span>.</p></li>
 <li><p>The program rests on the theory that demand for financial services has gone unmet by private supply because of missing financial infraestructure, i.e.&nbsp;brick and mortar banks in rural areas.</p></li>
 </ul>
 </section>
 <section id="research-question" class="slide level2">
 <h2>Research question</h2>
-<p>Can <em>Banco del Bienestar</em></p>
+<p>On the other hand, the program may be crowding out private banks and increasing competition in areas where they already operate.</p>
+<blockquote>
+<p>What is the net effect of <em>Banco del Bienestar</em> on private banks’ geographical access to clients?</p>
+</blockquote>
 </section></section>
 <section>
 <section id="data" class="title-slide slide level1 center">
@@ -406,15 +399,60 @@ Esteban Degetau
 </section>
 <section id="data-sources" class="slide level2">
 <h2>Data sources</h2>
-</section>
-<section id="data-description" class="slide level2">
-<h2>Data description</h2>
+<p>National Directory of Economic Units (DENUE) from the National Institute of Statistics and Geography (INEGI).</p>
+<ul>
+<li>The DENUE is a directory of all economic units in Mexico, including their location, economic activity, and size.</li>
+<li>Yearly updates for big businesses and/or key economic sectors.</li>
+<li>Complete updates every 5 years through the Economic Census.</li>
+</ul>
 </section>
 <section id="cleaning" class="slide level2">
 <h2>Cleaning</h2>
+<ul>
+<li>We filtered the data to include only banks.</li>
+<li><em>Banco del Bienestar</em> branches were easily identified by their name.</li>
+<li>We use DENUE data from 2021 to 2023 to see changes in branches’ locations over time, and see whether private banks are opening new branches in areas where <em>Banco del Bienestar</em> has invested.</li>
+</ul>
 </section>
-<section id="maps" class="slide level2">
-<h2>Maps</h2>
+<section id="nation-wide" class="slide level2">
+<h2>Nation wide</h2>
+<p><img data-src="figures/MXT.png">{fig-align=“center”; width=“100%”}</p>
+</section>
+<section id="cdmx" class="slide level2">
+<h2>CDMX</h2>
+
+<img data-src="figures/cdmx.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="oaxaca" class="slide level2">
+<h2>Oaxaca</h2>
+
+<img data-src="figures/oaxaca.png" class="quarto-figure quarto-figure-center r-stretch"></section></section>
+<section>
+<section id="foreward" class="title-slide slide level1 center">
+<h1>Foreward</h1>
+
+</section>
+<section id="next-steps" class="slide level2">
+<h2>Next steps</h2>
+<p>Take the distance between <em>Banco del Bienestar</em> and private banks:</p>
+<p><span class="math display">\[
+D_{ji}^1 = \text{Dist}(BdB_j^{2023}, PB_i^{2023})
+\]</span></p>
+<p>Then, take the distance between <em>Banco del Bienestar</em> and private banks in 2021: <span class="math display">\[
+D_{ji}^0 = \text{Dist}(BdB_j^{2023}, PB_i^{2021})
+\]</span></p>
+</section>
+<section id="change-in-distance" class="slide level2">
+<h2>Change in distance</h2>
+<p>We can calculate the change in distance between <em>Banco del Bienestar</em> and private banks: <span class="math display">\[
+\delta_{ij} = D_{ij}^1 - D_{ij}^0
+\]</span></p>
+</section>
+<section id="hypothesis-test" class="slide level2">
+<h2>Hypothesis test</h2>
+<p>Finally, we can test whether the average change in distance is statistically different from zero: <span class="math display">\[
+H_0: \mathbb E(\delta_{ij}) = 0 \quad \text{vs.} \quad H_1: \mathbb E(\delta_{ij}) \neq 0
+\]</span></p>
+<p>To show whether <em>Banco del Bienestar</em> is increasing geographic access to private banking.</p>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
@@ -424,6 +462,9 @@ Esteban Degetau
 </div>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-inegi_directorio_2023" class="csl-entry" role="listitem">
+INEGI. 2023. <span>“Directorio Estadístico Nacional de Unidades Económicas (<span>DENUE</span>).”</span> <a href="https://www.inegi.org.mx/rnm/index.php/catalog/924/related-materials">https://www.inegi.org.mx/rnm/index.php/catalog/924/related-materials</a>.
+</div>
 <div id="ref-navis2020" class="csl-entry" role="listitem">
 Navis, Kyle, Anit Mukherjee, Alan Gelb, Jorge Andrés Castañeda, Ivania Mazari, and Luis Mauricio Torres. 2020. <span>“The Puzzle of Financial Inclusion in Mexico: A Closeable Gap?”</span> <em>Center for Global Development</em>, 1–10.
 </div>
