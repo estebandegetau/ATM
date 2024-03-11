@@ -69,7 +69,7 @@ $$
 D_{ji}^1 = \text{Dist}(BdB_j^{2023}, PB_i^{2023})
 $$
 
-Then, take the distance between *Banco del Bienestar* and private banks in 2021:
+Then, take the distance between *Banco del Bienestar* 2023 locations and private banks in 2021:
 $$
 D_{ji}^0 = \text{Dist}(BdB_j^{2023}, PB_i^{2021})
 $$
@@ -81,14 +81,24 @@ $$
 \delta_{ij} = D_{ij}^1 - D_{ij}^0
 $$
 
+## $K$ nearest private banks
+
+However, private branches may be nearing remote regions regardless of the program. 
+
+A way to control for this is to compare changes in distance for only the $K$ nearest private banks to each program branch location $j$:
+
+$$
+\hat \delta_j(K) = \frac{1}{K}\sum_{i=1}^K \delta_{ij}
+$$
+
 ## Hypothesis test
 
-Finally, we can test whether the average change in distance is statistically different from zero:
+Finally, we can test whether the average change in distance is different from zero:
+
 $$
-H_0: \mathbb E(\delta_{ij}) = 0 \quad \text{vs.} \quad H_1: \mathbb E(\delta_{ij}) \neq 0
+H_0: \mathbb E(\hat \delta_i)  = 0 \quad \text{vs.} \quad H_1: \mathbb E(\hat \delta_{i}) \neq 0
 $$
 
-To show whether *Banco del Bienestar* is increasing geographic access to private banking.
-
+To show whether private banks are moving *on average* towards or away from *Banco del Bienestar* branches:
 
 ## References

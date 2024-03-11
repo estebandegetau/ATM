@@ -437,7 +437,7 @@ Esteban Degetau
 <p><span class="math display">\[
 D_{ji}^1 = \text{Dist}(BdB_j^{2023}, PB_i^{2023})
 \]</span></p>
-<p>Then, take the distance between <em>Banco del Bienestar</em> and private banks in 2021: <span class="math display">\[
+<p>Then, take the distance between <em>Banco del Bienestar</em> 2023 locations and private banks in 2021: <span class="math display">\[
 D_{ji}^0 = \text{Dist}(BdB_j^{2023}, PB_i^{2021})
 \]</span></p>
 </section>
@@ -447,12 +447,21 @@ D_{ji}^0 = \text{Dist}(BdB_j^{2023}, PB_i^{2021})
 \delta_{ij} = D_{ij}^1 - D_{ij}^0
 \]</span></p>
 </section>
+<section id="k-nearest-private-banks" class="slide level2">
+<h2><span class="math inline">\(K\)</span> nearest private banks</h2>
+<p>However, private branches may be nearing remote regions regardless of the program.</p>
+<p>A way to control for this is to compare changes in distance for only the <span class="math inline">\(K\)</span> nearest private banks to each program branch location <span class="math inline">\(j\)</span>:</p>
+<p><span class="math display">\[
+\hat \delta_j(K) = \frac{1}{K}\sum_{i=1}^K \delta_{ij}
+\]</span></p>
+</section>
 <section id="hypothesis-test" class="slide level2">
 <h2>Hypothesis test</h2>
-<p>Finally, we can test whether the average change in distance is statistically different from zero: <span class="math display">\[
-H_0: \mathbb E(\delta_{ij}) = 0 \quad \text{vs.} \quad H_1: \mathbb E(\delta_{ij}) \neq 0
+<p>Finally, we can test whether the average change in distance is different from zero:</p>
+<p><span class="math display">\[
+H_0: \mathbb E(\hat \delta_i)  = 0 \quad \text{vs.} \quad H_1: \mathbb E(\hat \delta_{i}) \neq 0
 \]</span></p>
-<p>To show whether <em>Banco del Bienestar</em> is increasing geographic access to private banking.</p>
+<p>To show whether private banks are moving <em>on average</em> towards or away from <em>Banco del Bienestar</em> branches:</p>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
