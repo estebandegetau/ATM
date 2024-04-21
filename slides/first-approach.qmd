@@ -49,7 +49,7 @@ National Directory of Economic Units (DENUE) from the National Institute of Stat
 
 ## Nation wide
 
-![](figures/MXT.png){fig-align="center"; width="100%"}
+![](figures/MXT.png){fig-align="center"}
 
 ## CDMX
 
