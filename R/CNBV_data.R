@@ -8,7 +8,7 @@ dir_1 <- here::here("data","cnbv")
 
 
 ym1 <- crossing(
-  year = 2017:2023,
+  year = 2017:2024,
   month = sprintf("%02d", 1:12)) %>%mutate(yearmonth = paste0(year, month)) %>% pull(yearmonth) %>% .[. <= "202402"]
 
 #operativa
@@ -40,18 +40,32 @@ f1<- f1 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
 
 #operativa desarrollo
 op2 <- function(x) {
-  df<- openxlsx::read.xlsx( glue("https://portafolioinfo.cnbv.gob.mx/_layouts/15/download.aspx?SourceUrl=https://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BD_Operativa_{x}.xlsx"),sheet = 2)
+  # Attempt to download and read the Excel file
+  df <- tryCatch({
+    df<- read.xlsx(glue("https://portafolioinfo.cnbv.gob.mx/_layouts/15/download.aspx?SourceUrl=https://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BD_Operativa_{x}.xlsx"),
+              sheet = 2)
+  }, error = function(e) {
+    message("Failed to download or read the file for ", x, ": ", e$message)
+    return(NULL)  # Return NULL if there's an error
+  })
 
-  df <- df %>% mutate(c_mun=str_sub(cve_inegi,4,8))%>%
-    filter(cve_tipo_informacion==31|cve_tipo_informacion==33|cve_tipo_informacion==34|cve_tipo_informacion==35|cve_tipo_informacion==37)%>%
-    group_by(cve_periodo,c_mun,dl_estado,dl_municipio,cve_tipo_informacion,dl_producto_financiero,nombre_publicacion) %>%
-    summarise(num=sum(dat_num_total,na.rm = T)) %>% ungroup() %>% filter(num!=0) %>%
-    filter(nombre_publicacion=="Bansefi"|nombre_publicacion=="Banco del Bienestar")%>% mutate(tipo="BD")
+  if (is.null(df)) {
+    return(NULL)  # Skip further processing if file wasn't read
+  }
 
-  print(x)
+  # Process the dataframe
+  df <- df %>%
+    mutate(c_mun = str_sub(cve_inegi, 4, 8)) %>%
+    filter(cve_tipo_informacion %in% c(31, 33, 34,35,37)) %>%
+    group_by(cve_periodo, c_mun, dl_estado, dl_municipio, cve_tipo_informacion, dl_producto_financiero, nombre_publicacion) %>%
+    summarise(num = sum(dat_num_total, na.rm = TRUE), .groups = 'drop') %>%
+    filter(num != 0, nombre_publicacion %in% c("Bansefi", "Banco del Bienestar")) %>%
+    mutate(tipo = "BD")
+
   return(df)
 }
 f2<-map(ym1, op2)
+f2 <- f2[-1] #
 f2 <- bind_rows(f2)
 
 f2<- f2 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
@@ -64,7 +78,6 @@ f2<- f2 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
   pivot_wider(names_from = dl_producto_financiero, values_from = num) %>% janitor::clean_names()
 
 
-rm(list = "f1")
 
 #captación multiple
 
@@ -84,8 +97,8 @@ f3 <- bind_rows(f3)
 
 f3<- f3 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
   group_by(year,c_mun,dl_estado,dl_municipio,cve_tipo_informacion,dl_producto_financiero,tipo) %>%
-  summarise( num=sum(num,na.rm = T),
-             liab=sum(liab,na.rm = T))  %>%
+  summarise( num=mean(num,na.rm = T),
+             liab=mean(liab,na.rm = T))  %>%
   ungroup() %>%
   select(-cve_tipo_informacion) %>%
   janitor::clean_names()
@@ -94,14 +107,31 @@ f3<- f3 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
 # captación desarrollo
 
 c2 <- function(x) {
-  df<- openxlsx::read.xlsx( glue("https://portafolioinfo.cnbv.gob.mx/_layouts/15/download.aspx?SourceUrl=https://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BD_Captaci%C3%B3n_{x}.xlsx"),sheet = 3)
-  df <- df %>% mutate(c_mun=str_sub(cve_inegi,4,8))%>%
-    filter(cve_tipo_informacion==99)%>%
-    group_by(cve_periodo,c_mun,dl_estado,dl_municipio,cve_tipo_informacion,dl_producto_financiero,nombre_publicacion) %>%
-    summarise(num=sum(dat_num_total,na.rm = T),
-              liab=sum(dat_saldo_producto,na.rm = T)) %>% ungroup() %>% filter(num!=0) %>%
-    filter(nombre_publicacion=="Bansefi"|nombre_publicacion=="Banco del Bienestar")%>%
-    mutate(tipo="BD")
+  # Attempt to download and read the Excel file
+  df <- tryCatch({
+    read.xlsx(glue("https://portafolioinfo.cnbv.gob.mx/_layouts/15/download.aspx?SourceUrl=https://portafolioinfo.cnbv.gob.mx/PortafolioInformacion/BD_Captación_{x}.xlsx"), sheet = 3)
+  }, error = function(e) {
+    message("Failed to download or read the file for ", x, ": ", e$message)
+    return(NULL)  # Return NULL if there's an error
+  })
+
+  # Check if the data frame was successfully read
+  if (is.null(df)) {
+    return(NULL)  # Skip further processing if file wasn't read
+  }
+
+  # Process the dataframe if download/read was successful
+  df <- df %>%
+    mutate(c_mun = str_sub(cve_inegi, 4, 8)) %>%
+    filter(cve_tipo_informacion == 99) %>%
+    group_by(cve_periodo, c_mun, dl_estado, dl_municipio, cve_tipo_informacion, dl_producto_financiero, nombre_publicacion) %>%
+    summarise(num = sum(dat_num_total, na.rm = TRUE),
+              liab = sum(dat_saldo_producto, na.rm = TRUE), .groups = 'drop') %>%
+    filter(num != 0) %>%
+    filter(nombre_publicacion %in% c("Bansefi", "Banco del Bienestar")) %>%
+    mutate(tipo = "BD")
+
+  # Print the processed year-month identifier
   print(x)
   return(df)
 }
@@ -111,15 +141,18 @@ f4 <- bind_rows(f4)
 
 f4<- f4 %>% mutate(year=str_sub(cve_periodo,1,4))%>%
   group_by(year,c_mun,dl_estado,dl_municipio,cve_tipo_informacion,dl_producto_financiero,tipo) %>%
-  summarise( num=sum(num,na.rm = T),
-             liab=sum(liab,na.rm = T))  %>%
+  summarise( num=mean(num,na.rm = T),
+             liab=mean(liab,na.rm = T))  %>%
   ungroup() %>%
   select(-cve_tipo_informacion) %>%
   janitor::clean_names()
 
 
-
-
+salida <- list("bmop"=f1,
+               "bdop"=f2,
+               "salbm"=f3,
+               "salbd"=f4)
+openxlsx::write.xlsx(salida, file =glue('{dir_1}/cnvbdetalle.xlsx'), overwrite = TRUE)
 
 
 #falta inegi/ deflactor /
