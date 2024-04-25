@@ -11,11 +11,16 @@ denue_dir <- here::here("data", "01_raw", "denue")
 pf <- c("Sucursales del Banco del Bienestar.kml")
 st_layers(glue::glue("{denue_dir}/{pf}"))
 
-centro <- st_read(glue::glue("{denue_dir}/{pf}"), layer = "Centro (CDMX, Edomex, Gro., Hgo., Mor., Pue. y Tlax.)")
-noreste <- st_read(glue::glue("{denue_dir}/{pf}"), layer = "Noreste (Coah, Dur., NL, SLP y Tamps.)")
-noroeste <- st_read(glue::glue("{denue_dir}/{pf}"), layer = "Noroeste (BC, BCS, Chih., Sin. y Son.)")
-occidente <- st_read(glue::glue("{denue_dir}/{pf}"), layer = "Occidente (Ags., Col., Gto., Jal., Mich., Nay., Qro. y Zac.)")
-sureste <- st_read(glue::glue("{denue_dir}/{pf}"), layer = "Sureste (Camp., Chia., Oax., QR, Tab., Ver. y Yuc.)")
+centro <-
+  st_read(glue::glue("{denue_dir}/{pf}"), layer = "Centro (CDMX, Edomex, Gro., Hgo., Mor., Pue. y Tlax.)")
+noreste <-
+  st_read(glue::glue("{denue_dir}/{pf}"), layer = "Noreste (Coah, Dur., NL, SLP y Tamps.)")
+noroeste <-
+  st_read(glue::glue("{denue_dir}/{pf}"), layer = "Noroeste (BC, BCS, Chih., Sin. y Son.)")
+occidente <-
+  st_read(glue::glue("{denue_dir}/{pf}"), layer = "Occidente (Ags., Col., Gto., Jal., Mich., Nay., Qro. y Zac.)")
+sureste <-
+  st_read(glue::glue("{denue_dir}/{pf}"), layer = "Sureste (Camp., Chia., Oax., QR, Tab., Ver. y Yuc.)")
 
 ## dde
 glue::glue("{denue_dir}/{pf}")

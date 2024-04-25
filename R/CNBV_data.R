@@ -1,7 +1,6 @@
 
 rm(list = ls())
 pacman::p_load( tidyverse,glue,openxlsx)
-dir.create(glue::glue('{getwd()}/data/cnbv'))
 
 dir_1 <- here::here("data","cnbv")
 #ym1 <- as.character(2017:2023)
@@ -157,3 +156,4 @@ openxlsx::write.xlsx(salida, file =glue('{dir_1}/cnvbdetalle.xlsx'), overwrite =
 
 #falta inegi/ deflactor /
 
+>>>>>>> 1adc3b7 (datos cnbv)
