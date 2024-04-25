@@ -56,13 +56,56 @@ entidades <-
   )
 
 
+load(here("data/03_working/branches.RData"))
+
+#---- Clean data ---------------------------------------------------------------
+
+branches_m <- branches |>
+  as_tibble() |>
+  group_by(year, cve_ent, cve_mun) |>
+  summarise(
+    program = sum(program),
+    private = sum(private)
+  ) |>
+  ungroup() |>
+  left_join(municipios, by = c("cve_ent" = "CVE_ENT", "cve_mun" = "CVE_MUN")) |>
+  st_sf()
+
+years <- branches_m$year |> unique()
+
+censo_m <- censo_l |>
+  filter(LOC == "0000", MUN != "000", ENTIDAD != "00") |>
+  full_join(municipios, by = c("ENTIDAD" = "CVE_ENT", "MUN" = "CVE_MUN")) |>
+  mutate(year = list(years)) |>
+  unnest(year) |>
+  left_join(branches_m, by = c("ENTIDAD" = "cve_ent", "MUN" = "cve_mun", "year"),
+            relationship = "one-to-many"
+  ) |>
+  mutate(
+    branches_per_100k = (program + private) / POBTOT * 100000,
+    program = ifelse(is.na(program), 0, program),
+    private = ifelse(is.na(private), 0, private)
+  ) |>
+  st_sf()
+
+
 #---- Save data ----------------------------------------------------------------
 
 save(
   censo_l,
+  file = here("data/03_working/census.RData")
+)
+
+save(
   localidades,
   agebs,
   municipios,
   entidades,
-  file = here("data/03_working/census.RData")
+  file = here("data/03_working/shapes.RData")
 )
+
+
+save(
+  branches_m,
+  censo_m,
+  file = here("data/03_working/municipios.RData"))
