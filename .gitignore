@@ -8,3 +8,4 @@
 .quarto
 data/02_temp/*
 data/01_raw/*
+.vscode/*
